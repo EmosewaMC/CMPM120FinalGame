@@ -1,6 +1,7 @@
 class GameLevel extends Phaser.Scene {
    static essentialsLoaded = false;
    lvl = 1;
+   lightMode = true;
    
    levelWorld = {
       width: 0,
@@ -54,15 +55,18 @@ class GameLevel extends Phaser.Scene {
       this.configJSON = this.cache.json.get("gameConfig");
       
       // Background video setup
+      this.nightBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
+         this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
+         "nightBG").setScale(6);
+      this.nightBG.play(true);
+
       this.dayBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
          this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
          "dayBG").setScale(6);
       this.dayBG.play(true);
 
-      this.nightBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
-         this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
-         "nightBG").setScale(6);
-      this.nightBG.play(true);
+      // SFX source construction
+      this.sfx = new sfxPlayer();
 
       // UI region backdrop
       let uiWidth = this.uiArea.right - this.uiArea.left;
@@ -85,6 +89,7 @@ class GameLevel extends Phaser.Scene {
          
          btn.on("pointerdown", () => {
             btn.setTint(0x555555);
+            this.sfx.toggleMoveSFX(true);
             this.player.setAngle(-90 * multiplier);
             let xSpeed = this.configJSON.directions[dir].x * this.configJSON.playerSpeed;
             let ySpeed = this.configJSON.directions[dir].y * this.configJSON.playerSpeed;
@@ -92,6 +97,7 @@ class GameLevel extends Phaser.Scene {
          })
          .on("pointerup", () => {
             btn.clearTint();
+            this.sfx.toggleMoveSFX(false);
             this.player.setVelocity(0);
          });
       }
@@ -127,6 +133,7 @@ class GameLevel extends Phaser.Scene {
       
       this.staticLayer = this.tilemap.createLayer("StaticObjects", this.tileset, 0, 0);
       this.staticLayer.setCollisionByExclusion([-1, 4]);
+      this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], this.sfx.Bump, this.sfx);
       // this.staticLayer.renderDebug(this.add.graphics());
 
       this.dayBridges = this.tilemap.createLayer("DayBridges", this.tileset, 0, 0);
@@ -158,6 +165,9 @@ class GameLevel extends Phaser.Scene {
    }
 
    ToDay() {
+      if (this.lightMode) return;
+      this.lightMode = true;
+
       this.dayBG.setVisible(true);
       this.nightBG.setVisible(false);
 
@@ -167,10 +177,19 @@ class GameLevel extends Phaser.Scene {
       this.nightBridges.setVisible(false);
       this.nightBridgeCollider.active = true;
 
+      // Disable day button collision
+      this.interactables.setCollision(6, false);
+      // Enable night button collision
+      this.interactables.setCollision(7, true);
+
+      this.sfx.TimeToggle(false);
       this.staticLayer.setTint(0xffffff);
    }
 
    ToNight() {
+      if (!this.lightMode) return;
+      this.lightMode = false;
+
       this.dayBG.setVisible(false);
       this.nightBG.setVisible(true);
 
@@ -180,6 +199,12 @@ class GameLevel extends Phaser.Scene {
       this.nightBridges.setVisible(true);
       this.nightBridgeCollider.active = false;
 
+      // Enable day button collision
+      this.interactables.setCollision(6, true);
+      // Disable night button collision
+      this.interactables.setCollision(7, false);
+
+      this.sfx.TimeToggle(true);
       this.staticLayer.setTint(0x222438);
    }
 
@@ -187,5 +212,6 @@ class GameLevel extends Phaser.Scene {
       console.log("Player has reached end of level");
       // Restart level for now. Either go back to level select or move directly into the next level
       this.scene.start("gamelevel", {lvl: 2});
+      this.sfx.toggleMoveSFX(false);
    }
 }
