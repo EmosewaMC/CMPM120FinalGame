@@ -32,8 +32,6 @@ class sfxPlayer {
 
    // For when player bumps into a wall
    Bump() {
-      console.log("Thud!");
-
       const volumeLevel = new Tone.Multiply(0.45).toDestination();
       const aEnv = new Tone.AmplitudeEnvelope({
          attack: 0.05,
