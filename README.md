@@ -1,5 +1,5 @@
 # CMPM120FinalGame
-[Final Game CMPM120](https://emosewamc.github.io/CMPM120FinalGame/) <br />
+[Final Deployed Game](https://emosewamc.github.io/CMPM120FinalGame/) <br />
 ----
 ### Prototypes: <br />
   * [Core Gameplay](https://t-amandawong.github.io/cmpm120-coregameplay/) <br />
@@ -16,6 +16,6 @@
   * Technology lead: David 'Dave' Markowitz <br />
   * Testing lead: Thanyared Amanda Wong <br />
 ### Asset Credits:
-  * All art made by Poom with Aseprite.
-  * Sound procedurally generated using Tone.js.
+  * All art made by Poom with Aseprite. <br />
+  * Sound procedurally generated using Tone.js. <br />
   * Background video obtained from [Shutterstock.](https://www.shutterstock.com/video/clip-1012154675-blue-sky-full-clouds-moving-down-cartoon) Edited by Dave with DaVinci Resolve.
