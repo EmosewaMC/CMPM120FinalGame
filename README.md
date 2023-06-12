@@ -1,4 +1,4 @@
-# CMPM120FinalGame
+# CMPM 120 Final Game - Team Sibjed (17)
 [Final Deployed Game](https://emosewamc.github.io/CMPM120FinalGame/) <br />
 ----
 ### Prototypes: <br />
