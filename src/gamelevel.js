@@ -121,10 +121,15 @@ class GameLevel extends Phaser.Scene {
 		this.muteButton = this.add.text(muteBtnX, muteBtnY, "MUTE").setFontSize(40).setInteractive()
 			.setOrigin(0.5)
 			.on("pointerdown", () => {
-				// TODO: change text based on mute state
-				let displayTxt = "UNMUTE";
-				muteButton.setText(displayTxt);
-				this.bgm.toggleMute(true);
+				let displayTxt;
+				if (GameLevel.muted) {
+					displayTxt = "MUTE";
+				} else {
+					displayTxt = "UNMUTE";
+				}
+				this.muteButton.setText(displayTxt);
+				GameLevel.muted = !GameLevel.muted;
+				this.sound.setMute(GameLevel.muted);
 			});
 
 		// Full screen button
