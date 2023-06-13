@@ -1,5 +1,7 @@
 class GameLevel extends Phaser.Scene {
    static essentialsLoaded = false;
+   static fullscreen = false;
+   static muted = false;
    lvl = 1;
    lightMode = true;
    
@@ -55,17 +57,16 @@ class GameLevel extends Phaser.Scene {
       this.uiArea.right = this.game.config.width;
 
       this.configJSON = this.cache.json.get("gameConfig");
-      
+      this.bg = this.add.rectangle(this.levelWorld.center.x, this.levelWorld.center.y, this.levelWorld.width, this.levelWorld.height, 0x8DDAFC);
+	this.videosPlaying = false;
       // Background video setup
       this.nightBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
          this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
          "nightBG").setScale(6);
-      this.nightBG.play(true);
 
       this.dayBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
          this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
          "dayBG").setScale(6);
-      this.dayBG.play(true);
 
       // SFX source
       this.sfx = new sfxPlayer();
@@ -101,6 +102,11 @@ class GameLevel extends Phaser.Scene {
             let xSpeed = this.configJSON.directions[dir].x * this.configJSON.playerSpeed;
             let ySpeed = this.configJSON.directions[dir].y * this.configJSON.playerSpeed;
             this.player.setVelocity(xSpeed, ySpeed);
+			if (!this.videosPlaying) {
+				this.nightBG.play(true);
+				this.dayBG.play(true);
+				this.videosPlaying = true;
+			}
          })
          .on("pointerup", () => {
             btn.clearTint();
@@ -112,7 +118,7 @@ class GameLevel extends Phaser.Scene {
       // Mute button
       let muteBtnX = this.uiArea.left + this.configJSON.muteButton.offsetFactor.x * uiWidth;
       let muteBtnY = this.uiArea.top + this.configJSON.muteButton.offsetFactor.y * uiHeight;
-      let muteButton = this.add.text(muteBtnX, muteBtnY, "MUTE").setFontSize(40).setInteractive()
+      this.muteButton = this.add.text(muteBtnX, muteBtnY, "MUTE").setFontSize(40).setInteractive()
       .setOrigin(0.5)
       .on("pointerdown", () => {
          // TODO: change text based on mute state
@@ -124,17 +130,19 @@ class GameLevel extends Phaser.Scene {
       // Full screen button
       let fullscreenBtnX = this.uiArea.left + this.configJSON.fullscreenButton.offsetFactor.x * uiWidth;
       let fullscreenBtnY = this.uiArea.top + this.configJSON.fullscreenButton.offsetFactor.y * uiHeight;
-      let fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, "FULL SCREEN").setFontSize(40).setInteractive()
+      this.fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, "FULL SCREEN").setFontSize(40).setInteractive()
       .setWordWrapWidth(200)
       .setAlign('center')
       .setOrigin(0.5)
-      .on("pointerdown", () => {
-         // TODO: change text based on full screen state
-         let displayTxt = "SHRINK";
-         fullscreenBtn.setText(displayTxt);
-      })
       .on("pointerup", () => {
-         this.scale.startFullscreen();
+		 GameLevel.fullscreen = !GameLevel.fullscreen;
+        if (GameLevel.fullscreen) {
+		   this.scale.stopFullscreen();
+		   this.fullscreenBtn.setText("FULL SCREEN");
+		} else {
+		 this.scale.startFullscreen();
+		 this.fullscreenBtn.setText("SHRINK");
+		}
       });
 
       // Level tile layout
