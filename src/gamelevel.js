@@ -207,7 +207,7 @@ class GameLevel extends SceneCache {
 
 		this.staticLayer = this.tilemap.createLayer("StaticObjects", this.tileset, 0, 0);
 		this.staticLayer.setCollisionByExclusion([-1, 4]);
-		this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], this.sfx.bump, this.sfx);
+		this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], () => { if (!GameLevel.muted) this.sfx.bump(); }, this.sfx);
 		// this.staticLayer.renderDebug(this.add.graphics());
 
 		this.dayBridges = this.tilemap.createLayer("DayBridges", this.tileset, 0, 0);
