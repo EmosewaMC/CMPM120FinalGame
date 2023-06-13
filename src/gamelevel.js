@@ -149,7 +149,7 @@ class GameLevel extends SceneCache {
 
 			btn.on("pointerdown", () => {
 				btn.setTint(0x555555);
-				if (!GameLevel.muted) this.sfx.toggleMoveSFX(true);
+				this.sfx.toggleMoveSFX(true);
 				this.player.setAngle(-90 * multiplier);
 				let xSpeed = this.configJSON.directions[dir].x * this.configJSON.playerSpeed;
 				let ySpeed = this.configJSON.directions[dir].y * this.configJSON.playerSpeed;
@@ -214,7 +214,7 @@ class GameLevel extends SceneCache {
 
 		this.staticLayer = this.tilemap.createLayer("StaticObjects", this.tileset, 0, 0);
 		this.staticLayer.setCollisionByExclusion([-1, 4]);
-		this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], () => { if (!GameLevel.muted) this.sfx.bump(); }, this.sfx);
+		this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], () => { this.sfx.bump(); }, this.sfx);
 		// this.staticLayer.renderDebug(this.add.graphics());
 
 		this.dayBridges = this.tilemap.createLayer("DayBridges", this.tileset, 0, 0);
@@ -281,7 +281,7 @@ class GameLevel extends SceneCache {
 			hostile.toggleBridgeCollisions(false);
 		}
 
-		if (!GameLevel.muted) this.sfx.timeToggle(false);
+		this.sfx.timeToggle(false);
 		this.bgm.toggleTime(false);
 		this.staticLayer.setTint(0xffffff);
 	}
@@ -308,7 +308,7 @@ class GameLevel extends SceneCache {
 			hostile.toggleBridgeCollisions(true);
 		}
 
-		if (!GameLevel.muted) this.sfx.timeToggle(true);
+		this.sfx.timeToggle(true);
 		this.bgm.toggleTime(true);
 		this.staticLayer.setTint(0x222438);
 	}
