@@ -30,8 +30,8 @@ class GameLevel extends Phaser.Scene {
    preload() {
       if (!GameLevel.essentialsLoaded) {
          this.load.path = "./assets/";
-         this.load.video("dayBG", "videos/skyBackground.mp4");
-         this.load.video("nightBG", "videos/night.mp4");
+         this.load.video({key: "dayBG", url: "videos/skyBackground.mp4", noAudio: true});
+         this.load.video({key: "nightBG", url: "videos/night.mp4", noAudio: true});
          this.load.json("gameConfig", "data/gameConfig.json");
          this.load.image("moveBtn", "images/ArrowButton.png");
          this.load.spritesheet("tileset", "images/CMPM120FinalTiles.png", {frameWidth: 120, frameHeight: 120});
@@ -45,7 +45,7 @@ class GameLevel extends Phaser.Scene {
    create() {
       this.levelWorld.width = this.game.config.width * (13 / 16);
       this.levelWorld.height = this.game.config.height;
-      this.levelWorld.bgOffset = {x: this.game.config.width * 0.5, y: this.game.config.height * 0.4}
+      this.levelWorld.bgOffset = {x: this.game.config.width * -0.5, y: this.game.config.height * 0.4};
       this.levelWorld.center = {x: this.levelWorld.width / 2, y: this.levelWorld.height / 2};
 
       this.uiArea.bottom = this.game.config.height;
@@ -63,6 +63,13 @@ class GameLevel extends Phaser.Scene {
       this.dayBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
          this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
          "dayBG").setScale(6);
+      this.dayBG.on("locked", () => {
+         this.dayBG.setTint(0x880000);
+         this.dayBG.playWhenUnlocked = true;
+         this.dayBG.on("unlocked", () => {
+            this.dayBG.setTint(0xffffff);
+         });
+      });
       this.dayBG.play(true);
 
       // SFX source construction
@@ -124,6 +131,8 @@ class GameLevel extends Phaser.Scene {
          // TODO: change text based on full screen state
          let displayTxt = "SHRINK";
          fullscreenBtn.setText(displayTxt);
+      })
+      .on("pointerup", () => {
          this.scale.startFullscreen();
       });
 
