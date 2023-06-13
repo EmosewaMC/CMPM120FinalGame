@@ -1,4 +1,49 @@
-class GameLevel extends Phaser.Scene {
+class SceneCache extends Phaser.Scene {
+	constructor(sceneName) {
+		super(sceneName);
+	}
+
+	setMuted(muted) {
+		this.file.muted = muted;
+		localStorage.setItem('muted', this.file.muted);
+		this.saveFile();
+		this.sound.setMute(muted);
+	}
+
+	setFullscreen(fullscreen) {
+		this.file.fullscreen = fullscreen;
+		localStorage.setItem('fullscreen', this.file.fullscreen);
+		this.saveFile();
+	}
+
+	saveFile() {
+		if (this.file == undefined) {
+			this.file = this.loadFile();
+			return;
+		}
+		localStorage.setItem('saveFile', JSON.stringify(this.file));
+	}
+
+	loadFile() {
+		let loadedFile = localStorage.getItem('saveFile');
+		// stupid edge cases
+		if (loadedFile == undefined || loadedFile == "undefined") {
+			this.file = {
+				muted: false
+			};
+			return;
+		}
+		this.file = JSON.parse(loadedFile);
+		this.setMuted(this.file.muted);
+	}
+
+	preload() {
+		this.loadFile();
+		this.canvas = this.sys.game.canvas;
+	}
+}
+
+class GameLevel extends SceneCache {
 	static essentialsLoaded = false;
 	static fullscreen = false;
 	static muted = false;
@@ -42,6 +87,7 @@ class GameLevel extends Phaser.Scene {
 			// this.load.tilemapTiledJSON("level3", "data/tilemaps/Level3.json");
 			GameLevel.essentialsLoaded = true;
 		}
+		super.preload();
 	}
 
 	create() {
@@ -97,7 +143,7 @@ class GameLevel extends Phaser.Scene {
 
 			btn.on("pointerdown", () => {
 				btn.setTint(0x555555);
-				this.sfx.toggleMoveSFX(true);
+				if (!GameLevel.muted) this.sfx.toggleMoveSFX(true);
 				this.player.setAngle(-90 * multiplier);
 				let xSpeed = this.configJSON.directions[dir].x * this.configJSON.playerSpeed;
 				let ySpeed = this.configJSON.directions[dir].y * this.configJSON.playerSpeed;
@@ -118,12 +164,14 @@ class GameLevel extends Phaser.Scene {
 		// Mute button
 		let muteBtnX = this.uiArea.left + this.configJSON.muteButton.offsetFactor.x * uiWidth;
 		let muteBtnY = this.uiArea.top + this.configJSON.muteButton.offsetFactor.y * uiHeight;
-		this.muteButton = this.add.text(muteBtnX, muteBtnY, "MUTE").setFontSize(40).setInteractive()
+		let muteText = GameLevel.muted ? "UNMUTE" : "MUTE";
+		this.muteButton = this.add.text(muteBtnX, muteBtnY, muteText).setFontSize(40).setInteractive()
 			.setOrigin(0.5)
 			.on("pointerdown", () => {
 				console.log(GameLevel.muted);
 				let displayTxt;
 				GameLevel.muted = !GameLevel.muted;
+				this.setMuted(GameLevel.muted);
 				if (GameLevel.muted) {
 					displayTxt = "UNMUTE";
 				} else {
@@ -136,12 +184,14 @@ class GameLevel extends Phaser.Scene {
 		// Full screen button
 		let fullscreenBtnX = this.uiArea.left + this.configJSON.fullscreenButton.offsetFactor.x * uiWidth;
 		let fullscreenBtnY = this.uiArea.top + this.configJSON.fullscreenButton.offsetFactor.y * uiHeight;
-		this.fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, "FULL SCREEN").setFontSize(40).setInteractive()
+		let fullscreenText = GameLevel.fullscreen ? "SHRINK" : "FULL SCREEN";
+		this.fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, fullscreenText).setFontSize(40).setInteractive()
 			.setWordWrapWidth(200)
 			.setAlign('center')
 			.setOrigin(0.5)
 			.on("pointerup", () => {
 				GameLevel.fullscreen = !GameLevel.fullscreen;
+				this.setFullscreen(GameLevel.fullscreen);
 				if (GameLevel.fullscreen) {
 					this.scale.stopFullscreen();
 					this.fullscreenBtn.setText("FULL SCREEN");
@@ -204,7 +254,7 @@ class GameLevel extends Phaser.Scene {
 		// Enable night button collision
 		this.interactables.setCollision(7, true);
 
-		this.sfx.timeToggle(false);
+		if (!GameLevel.muted) this.sfx.timeToggle(false);
 		this.bgm.toggleTime(false);
 		this.staticLayer.setTint(0xffffff);
 	}
@@ -227,7 +277,7 @@ class GameLevel extends Phaser.Scene {
 		// Disable night button collision
 		this.interactables.setCollision(7, false);
 
-		this.sfx.timeToggle(true);
+		if (!GameLevel.muted) this.sfx.timeToggle(true);
 		this.bgm.toggleTime(true);
 		this.staticLayer.setTint(0x222438);
 	}
