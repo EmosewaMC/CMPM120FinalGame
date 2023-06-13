@@ -5,6 +5,7 @@ class SceneCache extends Phaser.Scene {
 
 	setMuted(muted) {
 		this.file.muted = muted;
+		GameLevel.muted = muted;
 		localStorage.setItem('muted', this.file.muted);
 		this.saveFile();
 		this.sound.setMute(muted);
@@ -12,6 +13,7 @@ class SceneCache extends Phaser.Scene {
 
 	setFullscreen(fullscreen) {
 		this.file.fullscreen = fullscreen;
+		GameLevel.fullscreen = fullscreen;
 		localStorage.setItem('fullscreen', this.file.fullscreen);
 		this.saveFile();
 	}
@@ -21,6 +23,7 @@ class SceneCache extends Phaser.Scene {
 			this.file = this.loadFile();
 			return;
 		}
+		console.log(this.file);
 		localStorage.setItem('saveFile', JSON.stringify(this.file));
 	}
 
@@ -29,12 +32,14 @@ class SceneCache extends Phaser.Scene {
 		// stupid edge cases
 		if (loadedFile == undefined || loadedFile == "undefined") {
 			this.file = {
-				muted: false
+				muted: false,
+				fullscreen: false
 			};
 			return;
 		}
 		this.file = JSON.parse(loadedFile);
 		this.setMuted(this.file.muted);
+		this.setFullscreen(this.file.fullscreen);
 	}
 
 	preload() {
@@ -151,6 +156,7 @@ class GameLevel extends SceneCache {
 				if (!this.videosPlaying) {
 					this.nightBG.play(true);
 					this.dayBG.play(true);
+					if (GameLevel.fullscreen) this.scale.startFullscreen();
 					this.videosPlaying = true;
 				}
 			})
@@ -192,7 +198,7 @@ class GameLevel extends SceneCache {
 			.on("pointerup", () => {
 				GameLevel.fullscreen = !GameLevel.fullscreen;
 				this.setFullscreen(GameLevel.fullscreen);
-				if (GameLevel.fullscreen) {
+				if (!GameLevel.fullscreen) {
 					this.scale.stopFullscreen();
 					this.fullscreenBtn.setText("FULL SCREEN");
 				} else {
@@ -234,6 +240,8 @@ class GameLevel extends SceneCache {
 		this.dayBridgeCollider.active = false;
 		this.nightBridgeCollider = this.physics.add.collider(this.player, this.nightBridges);
 		this.physics.add.overlap(this.player, this.interactables);
+		console.log(GameLevel.fullscreen);
+
 	}
 
 	ToDay() {
