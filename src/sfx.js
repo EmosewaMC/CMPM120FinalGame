@@ -3,7 +3,6 @@ class sfxPlayer {
       // Footstep sound setup
       this.stepCounter = 0;
       this.stepLoop = new Tone.Loop(() => {
-         console.log("Looping");
          let pitch = (this.stepCounter == 0) ? "B4" : "D#5";
          const volumeLevel = new Tone.Multiply(0.15).toDestination();
          const aEnv = new Tone.AmplitudeEnvelope({
@@ -31,7 +30,7 @@ class sfxPlayer {
    }
 
    // For when player bumps into a wall
-   Bump() {
+   bump() {
       const volumeLevel = new Tone.Multiply(0.45).toDestination();
       const aEnv = new Tone.AmplitudeEnvelope({
          attack: 0.05,
@@ -44,7 +43,7 @@ class sfxPlayer {
    }
 
    // Day/Night toggle sound
-   TimeToggle(toNight) {
+   timeToggle(toNight) {
       let pitches = ["C4", "G4"];
       if (toNight) pitches.reverse();
 

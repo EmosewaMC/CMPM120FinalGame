@@ -43,6 +43,8 @@ class GameLevel extends Phaser.Scene {
    }
 
    create() {
+      // Note: levels are hard-coded to start in daytime mode.
+
       this.levelWorld.width = this.game.config.width * (13 / 16);
       this.levelWorld.height = this.game.config.height;
       this.levelWorld.bgOffset = {x: this.game.config.width * -0.5, y: this.game.config.height * 0.4};
@@ -65,8 +67,13 @@ class GameLevel extends Phaser.Scene {
          "dayBG").setScale(6);
       this.dayBG.play(true);
 
-      // SFX source construction
+      // SFX source
       this.sfx = new sfxPlayer();
+
+      // BGM Player
+      this.bgm = new BGM();
+      this.bgm.toggleMute(false);
+      this.bgm.play();
 
       // UI region backdrop
       let uiWidth = this.uiArea.right - this.uiArea.left;
@@ -111,6 +118,7 @@ class GameLevel extends Phaser.Scene {
          // TODO: change text based on mute state
          let displayTxt = "UNMUTE";
          muteButton.setText(displayTxt);
+         this.bgm.toggleMute(true);
       });
 
       // Full screen button
@@ -135,7 +143,7 @@ class GameLevel extends Phaser.Scene {
       
       this.staticLayer = this.tilemap.createLayer("StaticObjects", this.tileset, 0, 0);
       this.staticLayer.setCollisionByExclusion([-1, 4]);
-      this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], this.sfx.Bump, this.sfx);
+      this.staticLayer.setTileIndexCallback([1, 2, 3, 9, 11], this.sfx.bump, this.sfx);
       // this.staticLayer.renderDebug(this.add.graphics());
 
       this.dayBridges = this.tilemap.createLayer("DayBridges", this.tileset, 0, 0);
@@ -159,11 +167,9 @@ class GameLevel extends Phaser.Scene {
 
       this.physics.add.collider(this.player, this.staticLayer);
       this.dayBridgeCollider = this.physics.add.collider(this.player, this.dayBridges);
+      this.dayBridgeCollider.active = false;
       this.nightBridgeCollider = this.physics.add.collider(this.player, this.nightBridges);
       this.physics.add.overlap(this.player, this.interactables);
-
-      // Start the scene in daytime mode
-      this.ToDay();
    }
 
    ToDay() {
@@ -184,7 +190,8 @@ class GameLevel extends Phaser.Scene {
       // Enable night button collision
       this.interactables.setCollision(7, true);
 
-      this.sfx.TimeToggle(false);
+      this.sfx.timeToggle(false);
+      this.bgm.toggleTime(false);
       this.staticLayer.setTint(0xffffff);
    }
 
@@ -206,7 +213,8 @@ class GameLevel extends Phaser.Scene {
       // Disable night button collision
       this.interactables.setCollision(7, false);
 
-      this.sfx.TimeToggle(true);
+      this.sfx.timeToggle(true);
+      this.bgm.toggleTime(true);
       this.staticLayer.setTint(0x222438);
    }
 
@@ -215,5 +223,6 @@ class GameLevel extends Phaser.Scene {
       // Restart level for now. Either go back to level select or move directly into the next level
       this.scene.start("gamelevel", {lvl: 2});
       this.sfx.toggleMoveSFX(false);
+      this.bgm.stop();
    }
 }
