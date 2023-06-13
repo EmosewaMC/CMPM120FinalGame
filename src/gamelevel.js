@@ -63,13 +63,6 @@ class GameLevel extends Phaser.Scene {
       this.dayBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x, 
          this.levelWorld.center.y + this.levelWorld.bgOffset.y, 
          "dayBG").setScale(6);
-      this.dayBG.on("locked", () => {
-         this.dayBG.setTint(0x880000);
-         this.dayBG.playWhenUnlocked = true;
-         this.dayBG.on("unlocked", () => {
-            this.dayBG.setTint(0xffffff);
-         });
-      });
       this.dayBG.play(true);
 
       // SFX source construction
