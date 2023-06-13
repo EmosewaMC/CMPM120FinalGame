@@ -20,10 +20,10 @@ class BGM {
    }
 
    toggleMute(mute) {
-      if (mute && this.volumeLevel.numberOfOutputs == 1) {
+      if (mute) {
          this.volumeLevel.disconnect();
       }
-      else if (!mute && this.volumeLevel.numberOfOutputs == 0) {
+      else if (!mute) {
          this.volumeLevel.toDestination();
       }
    }
