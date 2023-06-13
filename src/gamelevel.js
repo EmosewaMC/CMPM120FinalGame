@@ -298,3 +298,16 @@ class GameLevel extends SceneCache {
 		this.bgm.stop();
 	}
 }
+
+class Intro extends SceneCache {
+	constructor() {
+		super("intro");
+	}
+
+	create() {
+		this.input.on("pointerup", () => {
+			this.scene.start("gamelevel", { lvl: 1 });
+			if (GameLevel.fullscreen) this.scale.startFullscreen();
+		});
+	}
+}
