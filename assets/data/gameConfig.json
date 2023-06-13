@@ -16,6 +16,23 @@
 
       {
          "spawnPoint" : {"x" : 0, "y" : 1} 
+      },
+
+      {
+         "spawnPoint" : {"x" : 5, "y" : 0},
+         "hostiles" : [
+            {
+               "start" : {"x" : 5, "y" : 4},
+               "endX" : 11,
+               "speed" : 250
+            },
+
+            {
+               "start" : {"x" : 5, "y" : 5},
+               "endX" : 1,
+               "speed" : 250
+            }
+         ]
       }
    ]
 }

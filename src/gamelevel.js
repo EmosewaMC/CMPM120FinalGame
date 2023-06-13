@@ -54,6 +54,7 @@ class GameLevel extends SceneCache {
 	static muted = false;
 	lvl = 1;
 	lightMode = true;
+	hostiles = [];
 
 	levelWorld = {
 		width: 0,
@@ -89,7 +90,7 @@ class GameLevel extends SceneCache {
 			this.load.spritesheet("tileset", "images/CMPM120FinalTiles.png", { frameWidth: 120, frameHeight: 120 });
 			this.load.tilemapTiledJSON("level1", "data/tilemaps/Level1.json");
 			this.load.tilemapTiledJSON("level2", "data/tilemaps/Level2.json");
-			// this.load.tilemapTiledJSON("level3", "data/tilemaps/Level3.json");
+			this.load.tilemapTiledJSON("level3", "data/tilemaps/Level3.json");
 			GameLevel.essentialsLoaded = true;
 		}
 		super.preload();
@@ -124,7 +125,7 @@ class GameLevel extends SceneCache {
 
 		// BGM Player
 		this.bgm = new BGM();
-		this.bgm.toggleMute(false);
+		this.bgm.toggleMute(GameLevel.muted);
 		this.bgm.play();
 
 		// UI region backdrop
@@ -242,6 +243,20 @@ class GameLevel extends SceneCache {
 		this.physics.add.overlap(this.player, this.interactables);
 		console.log(GameLevel.fullscreen);
 
+		// Hostile entities setup
+		if (this.configJSON.levels[this.lvl - 1].hostiles) {
+			let hostileConfigs = this.configJSON.levels[this.lvl - 1].hostiles;
+
+			for (let i = 0; i < hostileConfigs.length; ++i) {
+				let ix = this.tilemap.tileWidth * (hostileConfigs[i].start.x + 0.5);
+				let iy = this.tilemap.tileHeight * (hostileConfigs[i].start.y + 0.5);
+				let endX = this.tilemap.tileWidth * (hostileConfigs[i].endX + 0.5);
+				
+				let hostile = new Hostile(this, ix, iy, endX, hostileConfigs[i].speed);
+				this.hostiles.push(hostile);
+			}
+		}
+
 	}
 
 	ToDay() {
@@ -261,6 +276,10 @@ class GameLevel extends SceneCache {
 		this.interactables.setCollision(6, false);
 		// Enable night button collision
 		this.interactables.setCollision(7, true);
+
+		for (let hostile of this.hostiles) {
+			hostile.toggleBridgeCollisions(false);
+		}
 
 		if (!GameLevel.muted) this.sfx.timeToggle(false);
 		this.bgm.toggleTime(false);
@@ -285,17 +304,25 @@ class GameLevel extends SceneCache {
 		// Disable night button collision
 		this.interactables.setCollision(7, false);
 
+		for (let hostile of this.hostiles) {
+			hostile.toggleBridgeCollisions(true);
+		}
+
 		if (!GameLevel.muted) this.sfx.timeToggle(true);
 		this.bgm.toggleTime(true);
 		this.staticLayer.setTint(0x222438);
 	}
 
 	EndLevel() {
-		console.log("Player has reached end of level");
-		// Restart level for now. Either go back to level select or move directly into the next level
 		this.scene.start("gamelevel", { lvl: 2 });
 		this.sfx.toggleMoveSFX(false);
 		this.bgm.stop();
+	}
+
+	update() {
+		for (let hostile of this.hostiles) {
+			hostile.updateVelocity();
+		}
 	}
 }
 
@@ -306,7 +333,7 @@ class Intro extends SceneCache {
 
 	create() {
 		this.input.on("pointerup", () => {
-			this.scene.start("gamelevel", { lvl: 1 });
+			this.scene.start("gamelevel", { lvl: 3 });
 			if (GameLevel.fullscreen) this.scale.startFullscreen();
 		});
 	}
