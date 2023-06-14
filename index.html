@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>CMPM120 Final Game</title>
-   <script src="./lib/phaser.min.js"></script>
-   <script src="./lib/Tone.js"></script>
-   <script src="./src/bgm.js"></script>
-   <script src="./src/sfx.js"></script>
-   <script src="./src/gamelevel.js"></script>
-   <script src="./src/prefabs/hostile.js"></script>
-   <script src="./src/noninteractive.js"></script>
-   <script src="./src/title.js"></script>
-   <script>
-      const game = new Phaser.Game({
-      scale: {
-         mode: Phaser.Scale.FIT,
-         autoCenter: Phaser.Scale.CENTER_BOTH,
-         width: 1920,
-         height: 1080
-      },
-      backgroundColor: 0x999999,
-      physics: {
-         default: 'arcade',
-         arcade: {
-            debug: true
-         }
-      },
-      scene: [NonInteractive, Title, GameLevel],
-      title: "CMPM 120 Final Game",
-   });
-   </script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CMPM120 Final Game</title>
+	<script src="./lib/phaser.min.js"></script>
+	<script src="./lib/Tone.js"></script>
+	<script src="./src/bgm.js"></script>
+	<script src="./src/sfx.js"></script>
+	<script src="./src/gamelevel.js"></script>
+	<script src="./src/prefabs/hostile.js"></script>
+	<script src="./src/noninteractive.js"></script>
+	<script src="./src/title.js"></script>
+	<script>
+		const game = new Phaser.Game({
+			scale: {
+				mode: Phaser.Scale.FIT,
+				autoCenter: Phaser.Scale.CENTER_BOTH,
+				width: 1920,
+				height: 1080
+			},
+			backgroundColor: 0x999999,
+			physics: {
+				default: 'arcade',
+				arcade: {
+					debug: false
+				}
+			},
+			scene: [NonInteractive, Title, GameLevel],
+			title: "CMPM 120 Final Game",
+		});
+	</script>
 </head>
+
 </html>
