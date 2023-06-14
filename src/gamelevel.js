@@ -239,7 +239,7 @@ class GameLevel extends SceneCache {
 				let ix = this.tilemap.tileWidth * (hostileConfigs[i].start.x + 0.5);
 				let iy = this.tilemap.tileHeight * (hostileConfigs[i].start.y + 0.5);
 				let endX = this.tilemap.tileWidth * (hostileConfigs[i].endX + 0.5);
-				
+
 				let hostile = new Hostile(this, ix, iy, endX, hostileConfigs[i].speed, px, py);
 				this.hostiles.push(hostile);
 			}
