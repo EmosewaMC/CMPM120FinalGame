@@ -6,7 +6,7 @@ class sfxPlayer {
 			let pitch = (this.stepCounter == 0) ? "B4" : "D#5";
 			const volumeLevel = new Tone.Multiply(0.15).toDestination();
 			const aEnv = new Tone.AmplitudeEnvelope({
-				attack: 0.01,
+				attack: 0.05,
 				decay: 0.1,
 				sustain: 0.9,
 				release: 0.1
@@ -15,7 +15,6 @@ class sfxPlayer {
 			aEnv.triggerAttackRelease(0.05);
 			this.stepCounter = (this.stepCounter + 1) % 2;
 		}, 0.3);
-		Tone.Transport.start();
 	}
 
 	toggleMoveSFX(starting) {
@@ -33,7 +32,7 @@ class sfxPlayer {
 	bump() {
 		const volumeLevel = new Tone.Multiply(0.45).toDestination();
 		const aEnv = new Tone.AmplitudeEnvelope({
-			attack: 0.01,
+			attack: 0.05,
 			decay: 0.15,
 			sustain: 0.35,
 			release: 0.1
