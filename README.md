@@ -8,7 +8,7 @@
 ### Theme: <br />
   Traverse a maze, and swap between day and night to escape. <br />
 ### Selectable Requirements: <br />
-  * Data-driven experience progression: level layout is created using [gameConfig.json](./assets/data/gameConfig.json).
+  * Data-driven experience progression: level layout is created using [gameConfig.json](./assets/data/gameConfig.json) with further data located in [tilemaps](./assets/data/tilemaps/).
   * Advanced visual assets: Video plays in the background of each level ([night.mp4](./assets/videos/night.mp4) and [skyBackground.mp4](./assets/videos/skyBackground.mp4)).
   * Procedural audio: all audio is generated with code using [Tone.js](./lib/Tone.js) and our use cases in [sfx.js](./src/sfx.js) and [bgm.js](./src/bgm.js).
 ### Contributor Credits: <br />
