@@ -302,27 +302,18 @@ class GameLevel extends SceneCache {
 	}
 
 	EndLevel() {
-		this.scene.start("gamelevel", { lvl: 2 });
 		this.sfx.toggleMoveSFX(false);
 		this.bgm.stop();
 		this.hostiles = [];
+		if (this.lvl < 3) this.scene.start("gamelevel", { lvl: this.lvl + 1 });
+		else {
+			// TODO: go to end screen
+		}
 	}
 
 	update() {
 		for (let hostile of this.hostiles) {
 			hostile.updateVelocity();
 		}
-	}
-}
-
-class Intro extends SceneCache {
-	constructor() {
-		super("intro");
-	}
-
-	create() {
-		this.input.on("pointerup", () => {
-			this.scene.start("gamelevel", { lvl: 3 });
-		});
 	}
 }
