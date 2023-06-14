@@ -187,7 +187,7 @@ class GameLevel extends SceneCache {
 		// Full screen button
 		let fullscreenBtnX = this.uiArea.left + this.configJSON.fullscreenButton.offsetFactor.x * uiWidth;
 		let fullscreenBtnY = this.uiArea.top + this.configJSON.fullscreenButton.offsetFactor.y * uiHeight;
-		let fullscreenText = GameLevel.fullscreen ? "SHRINK" : "FULL SCREEN";
+		let fullscreenText = GameLevel.fullscreen ? "EXIT FULL SCREEN" : "FULL SCREEN";
 		this.fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, fullscreenText).setFontSize(40).setInteractive()
 			.setWordWrapWidth(200)
 			.setAlign('center')
@@ -199,7 +199,7 @@ class GameLevel extends SceneCache {
 					this.fullscreenBtn.setText("FULL SCREEN");
 				} else {
 					this.scale.startFullscreen();
-					this.fullscreenBtn.setText("SHRINK");
+					this.fullscreenBtn.setText("EXIT FULL SCREEN");
 				}
 			});
 

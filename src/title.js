@@ -102,7 +102,8 @@ class Title extends SceneCache {
 			.setColor("#111111")
 			.setFontSize(40).setInteractive()
 			.on("pointerdown", () => {
-				this.setMuted(!GameLevel.muted);
+				GameLevel.muted = !GameLevel.muted;
+				this.setMuted(GameLevel.muted);
 				settingsPlaceholderText.setText(GameLevel.muted ? "Unmute" : "Mute");
 			});
 		let settingsPlaceholderArea = this.add.group([settingsPlaceholderBacking, settingsPlaceholderText])
