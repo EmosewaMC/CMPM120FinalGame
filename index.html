@@ -12,6 +12,7 @@
    <script src="./src/gamelevel.js"></script>
    <script src="./src/noninteractive.js"></script>
    <script src="./src/title.js"></script>
+   <script src="./src/end.js"></script>
    <script>
       const game = new Phaser.Game({
       scale: {
@@ -24,11 +25,12 @@
       physics: {
          default: 'arcade',
          arcade: {
-            debug: true
+            debug: false
          }
       },
-      scene: [NonInteractive, Title, GameLevel],
+      scene: [NonInteractive, Title, GameLevel, End],
       title: "CMPM 120 Final Game",
+      pixelArt: true
    });
    </script>
 </head>

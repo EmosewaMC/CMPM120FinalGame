@@ -136,7 +136,7 @@ class GameLevel extends SceneCache {
 			let btnX = dirBtnCenter.x + this.configJSON.directions[dir].buttonOffsetFactor.x * uiWidth;
 			let btnY = dirBtnCenter.y + this.configJSON.directions[dir].buttonOffsetFactor.y * uiHeight;
 			let btn = this.add.image(btnX, btnY, "moveBtn")
-				.setAngle(-90 * multiplier).setScale(0.8).setInteractive();
+				.setAngle(-90 * multiplier).setScale(0.95).setInteractive();
 
 			btn.on("pointerdown", () => {
 				btn.setTint(0x555555);
@@ -307,7 +307,7 @@ class GameLevel extends SceneCache {
 		this.hostiles = [];
 		if (this.lvl < 3) this.scene.start("gamelevel", { lvl: this.lvl + 1 });
 		else {
-			// TODO: go to end screen
+			this.scene.start("end");
 		}
 	}
 
