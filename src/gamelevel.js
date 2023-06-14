@@ -151,11 +151,17 @@ class GameLevel extends SceneCache {
 					this.videosPlaying = true;
 				}
 			})
-				.on("pointerup", () => {
-					btn.clearTint();
-					this.sfx.toggleMoveSFX(false);
-					this.player.setVelocity(0);
-				});
+			btn.on("pointerup", () => {
+				btn.clearTint();
+				this.sfx.toggleMoveSFX(false);
+				this.player.setVelocity(0);
+			});
+			// When the player moves the pointer off the button, do the same work as pointerup
+			btn.on("pointerout", () => {
+				btn.clearTint();
+				this.sfx.toggleMoveSFX(false);
+				this.player.setVelocity(0);
+			});
 		}
 
 		// Mute button
