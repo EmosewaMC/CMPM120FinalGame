@@ -15,7 +15,6 @@ class sfxPlayer {
 			aEnv.triggerAttackRelease(0.05);
 			this.stepCounter = (this.stepCounter + 1) % 2;
 		}, 0.3);
-		Tone.Transport.start();
 	}
 
 	toggleMoveSFX(starting) {
