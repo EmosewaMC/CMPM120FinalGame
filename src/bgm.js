@@ -33,7 +33,6 @@ class BGM {
 		Tone.Transport.bpm.value = 120;
 		if (this.loop == undefined) {
 			this.loop = new Tone.Loop((time) => {
-				console.log("t");
 				let sequencePool = this.isNight ? this.nightSequences : this.daySequences;
 				let sequence = new Tone.Sequence((time, note) => {
 					this.synth.triggerAttackRelease(note, "4n", time);

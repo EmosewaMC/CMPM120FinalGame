@@ -88,6 +88,7 @@ class GameLevel extends SceneCache {
 	}
 
 	create() {
+		Tone.start();
 		// Note: levels are hard-coded to start in daytime mode.
 
 		this.levelWorld.width = this.game.config.width * (13 / 16);
