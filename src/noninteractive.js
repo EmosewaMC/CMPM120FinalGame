@@ -16,6 +16,8 @@ class NonInteractive extends SceneCache {
 		this.load.image("menuBtn", "images/MenuButton.png");
 		this.load.image("titleBgImg", "images/TitleSceneBackground.png");
 		this.load.image("titleFgImg", "images/TitleSceneForeground.png");
+		this.load.image("player", "images/Player.png");
+		this.load.image("hostile", "images/Hostile.png");
 	}
 
 	create() {

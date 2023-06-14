@@ -232,7 +232,7 @@ class GameLevel extends SceneCache {
 		// Player setup
 		let px = this.tilemap.tileWidth * (this.configJSON.levels[this.lvl - 1].spawnPoint.x + 0.5);
 		let py = this.tilemap.tileHeight * (this.configJSON.levels[this.lvl - 1].spawnPoint.y + 0.5);
-		this.player = this.physics.add.sprite(px, py, "moveBtn").setScale(0.8).setCollideWorldBounds(true);
+		this.player = this.physics.add.sprite(px, py, "player").setScale(0.8).setCollideWorldBounds(true);
 
 		this.physics.add.collider(this.player, this.staticLayer);
 		this.dayBridgeCollider = this.physics.add.collider(this.player, this.dayBridges);

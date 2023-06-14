@@ -150,7 +150,7 @@ class Title extends SceneCache {
 			paused: true,
 			onComplete: () => {
 				playButtonBG.setInteractive()
-					.on("pointerdown", () => this.scene.start("gamelevel"));
+					.on("pointerdown", () => this.scene.start("gamelevel", { lvl : 1 }));
 
 				settingsBtnBG.setInteractive()
 					.on("pointerdown", () => {

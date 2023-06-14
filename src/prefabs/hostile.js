@@ -1,9 +1,10 @@
 class Hostile {
 	constructor(scene, startX, startY, endX, speed, px, py) {
-		this.sprite = scene.physics.add.sprite(startX, startY, "moveBtn").setScale(0.8).setCollideWorldBounds(true);
+		this.sprite = scene.physics.add.sprite(startX, startY, "hostile").setScale(0.8).setCollideWorldBounds(true);
 		this.startX = startX;
 		this.endX = endX;
 		this.speed = speed;
+		this.sprite.setFlipX(this.startX > this.endX);
 
 		scene.physics.add.overlap(this.sprite, scene.player, () => {
 			scene.player.setPosition(px, py);
@@ -29,5 +30,6 @@ class Hostile {
 		let temp = this.endX;
 		this.endX = this.startX;
 		this.startX = temp;
+		this.sprite.setFlipX(this.startX > this.endX);
 	}
 }
