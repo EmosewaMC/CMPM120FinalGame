@@ -240,7 +240,7 @@ class GameLevel extends SceneCache {
 				let iy = this.tilemap.tileHeight * (hostileConfigs[i].start.y + 0.5);
 				let endX = this.tilemap.tileWidth * (hostileConfigs[i].endX + 0.5);
 				
-				let hostile = new Hostile(this, ix, iy, endX, hostileConfigs[i].speed);
+				let hostile = new Hostile(this, ix, iy, endX, hostileConfigs[i].speed, px, py);
 				this.hostiles.push(hostile);
 			}
 		}
@@ -305,6 +305,7 @@ class GameLevel extends SceneCache {
 		this.scene.start("gamelevel", { lvl: 2 });
 		this.sfx.toggleMoveSFX(false);
 		this.bgm.stop();
+		this.hostiles = [];
 	}
 
 	update() {

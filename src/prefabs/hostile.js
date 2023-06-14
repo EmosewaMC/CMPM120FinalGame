@@ -1,5 +1,5 @@
 class Hostile {
-	constructor(scene, startX, startY, endX, speed) {
+	constructor(scene, startX, startY, endX, speed, px, py) {
 		this.sprite = scene.physics.add.sprite(startX, startY, "moveBtn").setScale(0.8).setCollideWorldBounds(true);
 		this.startX = startX;
 		this.endX = endX;
