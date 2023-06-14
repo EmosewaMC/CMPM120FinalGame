@@ -151,11 +151,17 @@ class GameLevel extends SceneCache {
 					this.videosPlaying = true;
 				}
 			})
-				.on("pointerup", () => {
-					btn.clearTint();
-					this.sfx.toggleMoveSFX(false);
-					this.player.setVelocity(0);
-				});
+			btn.on("pointerup", () => {
+				btn.clearTint();
+				this.sfx.toggleMoveSFX(false);
+				this.player.setVelocity(0);
+			});
+			// When the player moves the pointer off the button, do the same work as pointerup
+			btn.on("pointerout", () => {
+				btn.clearTint();
+				this.sfx.toggleMoveSFX(false);
+				this.player.setVelocity(0);
+			});
 		}
 
 		// Mute button
@@ -181,7 +187,7 @@ class GameLevel extends SceneCache {
 		// Full screen button
 		let fullscreenBtnX = this.uiArea.left + this.configJSON.fullscreenButton.offsetFactor.x * uiWidth;
 		let fullscreenBtnY = this.uiArea.top + this.configJSON.fullscreenButton.offsetFactor.y * uiHeight;
-		let fullscreenText = GameLevel.fullscreen ? "SHRINK" : "FULL SCREEN";
+		let fullscreenText = GameLevel.fullscreen ? "EXIT FULL SCREEN" : "FULL SCREEN";
 		this.fullscreenBtn = this.add.text(fullscreenBtnX, fullscreenBtnY, fullscreenText).setFontSize(40).setInteractive()
 			.setWordWrapWidth(200)
 			.setAlign('center')
@@ -193,7 +199,7 @@ class GameLevel extends SceneCache {
 					this.fullscreenBtn.setText("FULL SCREEN");
 				} else {
 					this.scale.startFullscreen();
-					this.fullscreenBtn.setText("SHRINK");
+					this.fullscreenBtn.setText("EXIT FULL SCREEN");
 				}
 			});
 
@@ -239,7 +245,7 @@ class GameLevel extends SceneCache {
 				let ix = this.tilemap.tileWidth * (hostileConfigs[i].start.x + 0.5);
 				let iy = this.tilemap.tileHeight * (hostileConfigs[i].start.y + 0.5);
 				let endX = this.tilemap.tileWidth * (hostileConfigs[i].endX + 0.5);
-				
+
 				let hostile = new Hostile(this, ix, iy, endX, hostileConfigs[i].speed, px, py);
 				this.hostiles.push(hostile);
 			}
