@@ -73,9 +73,10 @@ class NonInteractive extends SceneCache {
 			.setWordWrapWidth(800)
 			.setColor("#ffffff");
 
-		this.input.on("pointerdown", () => {
-			instruction.setAlpha(0);
+		this.input.once("pointerdown", () => {
+			instruction.destroy();
 			oneDrop.play();
+         Tone.start(); // Please leave this line as is -- this ensures that audio context starts on iOS.
 		});
 	}
 

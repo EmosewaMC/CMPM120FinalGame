@@ -102,15 +102,22 @@ class GameLevel extends SceneCache {
 
 		this.configJSON = this.cache.json.get("gameConfig");
 		this.bg = this.add.rectangle(this.levelWorld.center.x, this.levelWorld.center.y, this.levelWorld.width, this.levelWorld.height, 0x8DDAFC);
-		this.videosPlaying = false;
 		// Background video setup
 		this.nightBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x,
 			this.levelWorld.center.y + this.levelWorld.bgOffset.y,
 			"nightBG").setScale(6);
+		this.nightBG.on('locked', () => {
+			this.input.on('pointerdown', () => this.nightBG.play(true));
+		});
+		this.nightBG.play(true);
 
 		this.dayBG = this.add.video(this.levelWorld.center.x + this.levelWorld.bgOffset.x,
 			this.levelWorld.center.y + this.levelWorld.bgOffset.y,
 			"dayBG").setScale(6);
+		this.dayBG.on('locked', () => {
+			this.input.on('pointerdown', () => this.dayBG.play(true));
+		});
+		this.dayBG.play(true);
 
 		// SFX source
 		this.sfx = new sfxPlayer();
@@ -146,12 +153,7 @@ class GameLevel extends SceneCache {
 				let xSpeed = this.configJSON.directions[dir].x * this.configJSON.playerSpeed;
 				let ySpeed = this.configJSON.directions[dir].y * this.configJSON.playerSpeed;
 				this.player.setVelocity(xSpeed, ySpeed);
-				if (!this.videosPlaying) {
-					this.nightBG.play(true);
-					this.dayBG.play(true);
-					this.videosPlaying = true;
-				}
-			})
+			});
 			btn.on("pointerup", () => {
 				btn.clearTint();
 				this.sfx.toggleMoveSFX(false);
@@ -310,6 +312,7 @@ class GameLevel extends SceneCache {
 
 	EndLevel() {
 		this.sfx.toggleMoveSFX(false);
+		this.sfx.stop();
 		this.bgm.stop();
 		this.hostiles = [];
 		if (this.lvl < 3) this.scene.start("gamelevel", { lvl: this.lvl + 1 });

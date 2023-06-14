@@ -47,6 +47,7 @@ class BGM {
 
 	stop() {
 		this.loop.stop();
+		this.loop.dispose();
 	}
 
 	toggleTime(toNight) {
