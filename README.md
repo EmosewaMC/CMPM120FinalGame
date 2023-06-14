@@ -17,5 +17,5 @@
   * Testing lead: Thanyared Amanda Wong <br />
 ### Asset Credits:
   * All art made by Poom with Aseprite. <br />
-  * Sound procedurally generated using Tone.js. <br />
+  * Sound procedurally generated using [Tone.js](./lib/Tone.js). <br />
   * Background video obtained from [Shutterstock.](https://www.shutterstock.com/video/clip-1012154675-blue-sky-full-clouds-moving-down-cartoon) Edited by Dave with DaVinci Resolve.
