@@ -39,7 +39,10 @@ class NonInteractive extends SceneCache {
 				team.postFX.addShine(1);
 				this.sfx.timeToggle(false); // Repurpose time toggle to day sound
 				this.time.delayedCall(600, () => this.cameras.main.fadeOut(1000, 0, 0, 0, (c, t) => {
-					if (t >= 1) this.scene.start("interactive");
+					if (t >= 1) {
+                  this.sfx.stop();
+                  this.scene.start("interactive");
+               }
 				}));
 			},
 			paused: true

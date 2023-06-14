@@ -24,6 +24,31 @@ class sfxPlayer {
 		}, 0.3);
 
 		this.nodes.push(this.stepLoop);
+
+		// Bump setup
+		this.bumpVol = new Tone.Multiply(0.45).toDestination();
+		this.nodes.push(this.bumpVol);
+
+		this.bumpEnv = new Tone.AmplitudeEnvelope({
+			attack: 0.05,
+			decay: 0.15,
+			sustain: 0.35,
+			release: 0.1
+		}).connect(this.bumpVol);
+		this.nodes.push(this.bumpEnv);
+
+		this.bumpNoise = new Tone.Noise("pink").connect(this.bumpEnv).start();
+		this.nodes.push(this.bumpNoise);
+
+		// Toggle setup
+		this.toggleVol = new Tone.Multiply(0.3).toDestination();
+		this.nodes.push(this.toggleVol);
+
+		this.cheby = new Tone.Chebyshev(20).connect(this.toggleVol);
+		this.nodes.push(this.cheby);
+		
+		this.toggleSynth = new Tone.Synth().connect(this.cheby);
+		this.nodes.push(this.toggleSynth);
 	}
 
 	toggleMoveSFX(starting) {
@@ -38,21 +63,7 @@ class sfxPlayer {
 
 	// For when player bumps into a wall
 	bump() {
-		const volumeLevel = new Tone.Multiply(0.45).toDestination();
-		this.nodes.push(volumeLevel);
-		
-		const aEnv = new Tone.AmplitudeEnvelope({
-			attack: 0.05,
-			decay: 0.15,
-			sustain: 0.35,
-			release: 0.1
-		}).connect(volumeLevel);
-		this.nodes.push(aEnv);
-
-		const noise = new Tone.Noise("pink").connect(aEnv).start();
-		this.nodes.push(noise);
-
-		aEnv.triggerAttackRelease(0.15);
+		this.bumpEnv.triggerAttackRelease(0.15);
 	}
 
 	// Day/Night toggle sound
@@ -60,15 +71,8 @@ class sfxPlayer {
 		let pitches = ["C4", "G4"];
 		if (toNight) pitches.reverse();
 
-		const volumeLevel = new Tone.Multiply(0.3).toDestination();
-		this.nodes.push(volumeLevel);
-		const cheby = new Tone.Chebyshev(20).connect(volumeLevel);
-		this.nodes.push(cheby);
-		const src = new Tone.Synth().connect(cheby);
-		this.nodes.push(src);
-
-		src.triggerAttackRelease(pitches[0], "8n");
-		src.triggerAttackRelease(pitches[1], "8n.", "+8n");
+		this.toggleSynth.triggerAttackRelease(pitches[0], "8n");
+		this.toggleSynth.triggerAttackRelease(pitches[1], "8n.", "+8n");
 	}
 
 	stop() {
