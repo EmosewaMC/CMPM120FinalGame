@@ -1,33 +1,33 @@
 class Hostile {
-   constructor(scene, startX, startY, endX, speed) {
-      this.sprite = scene.physics.add.sprite(startX, startY, "moveBtn").setScale(0.8).setCollideWorldBounds(true);
-      this.startX = startX;
-      this.endX = endX;
-      this.speed = speed;
+	constructor(scene, startX, startY, endX, speed) {
+		this.sprite = scene.physics.add.sprite(startX, startY, "moveBtn").setScale(0.8).setCollideWorldBounds(true);
+		this.startX = startX;
+		this.endX = endX;
+		this.speed = speed;
 
-      scene.physics.add.overlap(this.sprite, scene.player, () => {
-         scene.player.setPosition(px, py);
-      });
+		scene.physics.add.overlap(this.sprite, scene.player, () => {
+			scene.player.setPosition(px, py);
+		});
 
-      this.dayBridgeCollider = scene.physics.add.collider(scene.dayBridges, this.sprite, () => this.changeDirection());
-      this.nightBridgeCollider = scene.physics.add.collider(scene.nightBridges, this.sprite, () => this.changeDirection());
-   }
+		this.dayBridgeCollider = scene.physics.add.collider(scene.dayBridges, this.sprite, () => this.changeDirection());
+		this.nightBridgeCollider = scene.physics.add.collider(scene.nightBridges, this.sprite, () => this.changeDirection());
+	}
 
-   updateVelocity() {
-      let dir = Math.sign(this.endX - this.startX);
-      this.sprite.setVelocity(dir * this.speed, 0);
+	updateVelocity() {
+		let dir = Math.sign(this.endX - this.startX);
+		this.sprite.setVelocity(dir * this.speed, 0);
 
-      if (Math.abs(this.sprite.x - this.startX) >= Math.abs(this.endX - this.startX)) this.changeDirection();
-   }
+		if (Math.abs(this.sprite.x - this.startX) >= Math.abs(this.endX - this.startX)) this.changeDirection();
+	}
 
-   toggleBridgeCollisions(toNight) {
-      this.dayBridgeCollider.active = toNight;
-      this.nightBridgeCollider.active = !toNight;
-   }
+	toggleBridgeCollisions(toNight) {
+		this.dayBridgeCollider.active = toNight;
+		this.nightBridgeCollider.active = !toNight;
+	}
 
-   changeDirection() {
-      let temp = this.endX;
-      this.endX = this.startX;
-      this.startX = temp;
-   }
+	changeDirection() {
+		let temp = this.endX;
+		this.endX = this.startX;
+		this.startX = temp;
+	}
 }
