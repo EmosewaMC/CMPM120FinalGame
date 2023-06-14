@@ -19,3 +19,6 @@
   * All art made by Poom with Aseprite. <br />
   * Sound procedurally generated using [Tone.js](./lib/Tone.js). <br />
   * Background video obtained from [Shutterstock.](https://www.shutterstock.com/video/clip-1012154675-blue-sky-full-clouds-moving-down-cartoon) Edited by Dave with DaVinci Resolve.
+
+### Known issues
+- Game runs fine on apple phones, but some android phones have issues with the sound overlapping and eventually shutting off.  Game runs fine on phones otherwise.
