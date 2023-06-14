@@ -16,8 +16,6 @@ class NonInteractive extends SceneCache {
 		this.load.image("menuBtn", "images/MenuButton.png");
 		this.load.image("titleBgImg", "images/TitleSceneBackground.png");
 		this.load.image("titleFgImg", "images/TitleSceneForeground.png");
-		// this.load.audio("impact", "sounds/GroundImpact.wav");
-		// this.load.audio("jingle", "sounds/jingle.mp3");
 	}
 
 	create() {
@@ -29,7 +27,6 @@ class NonInteractive extends SceneCache {
 		let seven = this.add.image(0.5 * w, 0.5 * h, "seven").setOrigin(0.5).setScale(scaleFactor * 0.5);
 		let team = this.add.image(0.5 * w, 0.5 * h, "teamname").setOrigin(0.5).setScale(scaleFactor * 0.5);
 
-		// TODO: replace with Tone.js sounds
 		this.sfx = new sfxPlayer();
 
 		let teamNameAppear = this.tweens.add({
@@ -40,7 +37,7 @@ class NonInteractive extends SceneCache {
 				one.postFX.addShine(1);
 				seven.postFX.addShine(1);
 				team.postFX.addShine(1);
-				// jingle.play(); -- TODO: replace with Tone.js sound effect
+				this.sfx.timeToggle(false); // Repurpose time toggle to day sound
 				this.time.delayedCall(600, () => this.cameras.main.fadeOut(1000, 0, 0, 0, (c, t) => {
 					if (t >= 1) this.scene.start("interactive");
 				}));
