@@ -18,6 +18,8 @@ class BGM {
 		let night4 = ["A2", "C3", "E3", "C3"];
 		this.nightSequences = [night1, night2, night3, night4];
 		this.loop = undefined;
+		this.currentSeq = undefined;
+		this.prevSeq = undefined;
 	}
 
 	toggleMute(mute) {
@@ -34,11 +36,13 @@ class BGM {
 		if (this.loop == undefined) {
 			this.loop = new Tone.Loop((time) => {
 				let sequencePool = this.isNight ? this.nightSequences : this.daySequences;
-				let sequence = new Tone.Sequence((time, note) => {
+				this.prevSeq = this.currentSeq;
+				this.currentSeq = new Tone.Sequence((time, note) => {
 					this.synth.triggerAttackRelease(note, "4n", time);
 				}, sequencePool[this.measureCount], "4n");
-				sequence.loop = false;
-				sequence.start();
+				this.currentSeq.loop = false;
+				this.currentSeq.start();
+				if (this.prevSeq != undefined) this.prevSeq.dispose();
 				this.measureCount = (this.measureCount + 1) % 4;
 			}, "1m").start(0);
 			Tone.Transport.start();
@@ -48,6 +52,9 @@ class BGM {
 	stop() {
 		this.loop.stop();
 		this.loop.dispose();
+		this.volumeLevel.dispose();
+		this.synth.dispose();
+		this.currentSeq.dispose(); // Flush out current sequence if it happens to be playing when it's time to move on
 	}
 
 	toggleTime(toNight) {
